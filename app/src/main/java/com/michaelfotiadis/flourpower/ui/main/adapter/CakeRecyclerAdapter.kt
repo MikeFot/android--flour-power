@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.michaelfotiadis.flourpower.R
 import com.michaelfotiadis.flourpower.di.GlideApp
 import com.michaelfotiadis.flourpower.ui.main.model.UiCakeItem
@@ -40,18 +39,10 @@ class CakeRecyclerAdapter(private val callback: Callback) :
 
             contentDescription = item.title
 
-            val circularProgressDrawable = CircularProgressDrawable(context)
-                .apply {
-                    strokeWidth = 5f
-                    centerRadius = 10f
-                    start()
-                }
-
             // keep in mind: http calls will fail
             GlideApp.with(this)
                 .load(item.image)
                 .fitCenter()
-                .placeholder(circularProgressDrawable)
                 .error(R.drawable.ic_error_outline)
                 .into(this)
         }
@@ -68,8 +59,8 @@ class CakeRecyclerAdapter(private val callback: Callback) :
         }
 
         override fun areContentsTheSame(oldItem: UiCakeItem, newItem: UiCakeItem): Boolean {
-            return oldItem.description == newItem.description
-                && oldItem.image == newItem.image
+            return oldItem.description == newItem.description &&
+                oldItem.image == newItem.image
         }
     }
 }

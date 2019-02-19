@@ -2,6 +2,7 @@ package com.michaelfotiadis.flourpower.ui.main
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -19,8 +20,6 @@ import com.michaelfotiadis.flourpower.ui.main.model.UiCakeItem
 import com.michaelfotiadis.flourpower.ui.main.viewmodel.MainViewModel
 import com.michaelfotiadis.flourpower.ui.main.viewmodel.MainViewModelFactory
 import es.dmoral.toasty.Toasty
-import jp.wasabeef.recyclerview.animators.FadeInAnimator
-import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -61,8 +60,13 @@ class MainActivity : BaseActivity() {
             } else {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             }
+            layoutAnimation =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_slide_from_right)
             adapter = this@MainActivity.adapter
+        }
 
+        viewHolder.swipeRefreshLayout.apply {
+            setOnRefreshListener { viewModel.loadCakes() }
         }
 
         if (savedInstanceState == null) {
@@ -91,6 +95,14 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onLoadingStateChanged(loadingState: LoadingState?) {
+
+        when (loadingState) {
+            LoadingState.LOADING -> viewHolder.swipeRefreshLayout.isEnabled = false
+            LoadingState.IDLE -> {
+                viewHolder.swipeRefreshLayout.isEnabled = true
+                viewHolder.swipeRefreshLayout.isRefreshing = false
+            }
+        }
     }
 
     inner class MainViewHolder(activity: AppCompatActivity) {
