@@ -1,0 +1,21 @@
+allprojects {
+    ext {
+        // NEVER name this block 'android'. Never name *ANY* block android
+        androidVersions = [
+                minSdkVersion    : 23,
+                targetSdkVersion : 28,
+                compileSdkVersion: 28
+        ]
+        daggerVersion = '2.16'
+        glideVersion = '4.8.0'
+        retrofitVersion = '2.4.0'
+        leakCanaryVersion = "1.6.2"
+
+        mockitoVersions = [
+                mockitoVersion      : '2.11.0',
+                mockitoKotlinVersion: '1.5.0',
+        ]
+    }
+
+
+}
