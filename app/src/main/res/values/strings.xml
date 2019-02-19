@@ -2,7 +2,6 @@
     <string name="app_name">Flour Power</string>
 
 
-
     <string name="ui_error_communication">There has been an issue communicating with the server. Please try again later.</string>
     <string name="ui_error_internal_server_error">There has been an issue communicating with the server</string>
     <string name="ui_error_unexpected">Something has gone wrong. Please try again.</string>
@@ -15,5 +14,7 @@
     <string name="ui_error_bad_request">Something has gone wrong. Please check your input and try again.</string>
     <string name="ui_error_payload_too_large">The file you are trying to upload is too large.</string>
     <string name="ui_error_no_permission">We are sorry but you don\'t have permission to perform this action.</string>
+    <string name="main_error_message">Something has gone wrong!\nPlease pull to refresh</string>
+    <string name="main_error_emoji">"\u2639"</string>
 
 </resources>
