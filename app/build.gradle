@@ -69,6 +69,8 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     testImplementation 'junit:junit:4.12'
+    testImplementation group: 'androidx.arch.core', name: 'core-testing', version: '2.0.0'
+
     testImplementation "org.mockito:mockito-core:$mockitoVersions.mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$mockitoVersions.mockitoVersion"
     testImplementation "com.squareup.retrofit2:retrofit-mock:$retrofitVersion"
