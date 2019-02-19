@@ -25,9 +25,6 @@ class MainViewModel(
     val errorData = MutableLiveData<UiError>()
     val loadingStateData = MutableLiveData<LoadingState>()
 
-    init {
-    }
-
     fun loadCakes() {
 
         val callback = object : BaseDisposableInteractor.Callback<List<CakeEntity>> {

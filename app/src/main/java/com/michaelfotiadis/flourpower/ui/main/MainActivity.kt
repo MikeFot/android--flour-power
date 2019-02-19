@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.ViewFlipper
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -83,6 +82,11 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.cancelAllJobs()
+    }
+
     private fun setUpViews() {
 
         viewHolder.toolbar.apply {
@@ -141,7 +145,7 @@ class MainActivity : BaseActivity() {
                     viewHolder.swipeRefreshLayout.isEnabled = false
                 }
             }
-            LoadingState.IDLE    -> {
+            LoadingState.IDLE -> {
                 viewHolder.swipeRefreshLayout.post {
                     viewHolder.swipeRefreshLayout.isEnabled = true
                     viewHolder.swipeRefreshLayout.isRefreshing = false
@@ -150,11 +154,11 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    internal class MainViewHolder(activity: AppCompatActivity) {
-        val toolbar = activity.findViewById<Toolbar>(R.id.toolbar)
-        val recyclerView = activity.findViewById<RecyclerView>(R.id.recycler_view)
+    internal class MainViewHolder(activity: MainActivity) {
+        val toolbar = activity.findViewById<Toolbar>(R.id.toolbar)!!
+        val recyclerView = activity.findViewById<RecyclerView>(R.id.recycler_view)!!
         val swipeRefreshLayout =
-            activity.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
-        val viewFlipper = activity.findViewById<ViewFlipper>(R.id.view_flipper)
+            activity.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)!!
+        val viewFlipper = activity.findViewById<ViewFlipper>(R.id.view_flipper)!!
     }
 }
