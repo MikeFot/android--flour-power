@@ -19,7 +19,6 @@ import com.michaelfotiadis.flourpower.ui.main.mapper.UiCakeSorter
 import com.michaelfotiadis.flourpower.ui.main.model.UiCakeItem
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doAnswer
-import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
@@ -170,9 +169,8 @@ class MainViewModelTest {
     fun loadCakes_andShowResult() {
 
         val cakeResponse = mock<List<CakeEntity>>()
-        val cakeUiItems = mock<List<UiCakeItem>> {
-            on(it.size) doReturn 2
-        }
+        val mixedCakeUiItems = mock<List<UiCakeItem>>()
+        val sortedCakeUiItems = mock<List<UiCakeItem>>()
 
         val cakeResult = RepoResult(
             payload = cakeResponse,
@@ -181,8 +179,8 @@ class MainViewModelTest {
         )
 
         `when`(uiErrorMapper.convert(any())).thenReturn(null)
-        `when`(uiCakesMapper.convert(anyList())).thenReturn(cakeUiItems)
-        `when`(uiCakeSorter.sort(anyList())).thenReturn(cakeUiItems)
+        `when`(uiCakesMapper.convert(anyList())).thenReturn(mixedCakeUiItems)
+        `when`(uiCakeSorter.sort(mixedCakeUiItems)).thenReturn(sortedCakeUiItems)
 
         doAnswer {
             val callback: BaseDisposableInteractor.Callback<List<CakeEntity>> = it.getArgument(0)
@@ -194,8 +192,9 @@ class MainViewModelTest {
 
         // assert
         verify(uiCakesMapper).convert(cakeResponse)
+        verify(uiCakeSorter).sort(mixedCakeUiItems)
         verify(loadingStateObserver).onChanged(LoadingState.IDLE)
-        verify(resultsObserver).onChanged(cakeUiItems)
+        verify(resultsObserver).onChanged(sortedCakeUiItems)
         verifyZeroInteractions(errorObserver)
     }
 
@@ -208,7 +207,7 @@ class MainViewModelTest {
         )
         val uiErrorResult = UiError.COMMUNICATION
 
-        `when`(uiErrorMapper.convert(any())).thenReturn(uiErrorResult)
+        `when`(uiErrorMapper.convert(errorResult.dataSourceError!!)).thenReturn(uiErrorResult)
 
         doAnswer {
             val callback: BaseDisposableInteractor.Callback<List<CakeEntity>> = it.getArgument(0)
@@ -219,10 +218,9 @@ class MainViewModelTest {
         viewModel.loadCakes()
 
         // assert
+        verify(uiErrorMapper).convert(errorResult.dataSourceError!!)
         verify(loadingStateObserver).onChanged(LoadingState.IDLE)
-
         verify(errorObserver).onChanged(uiErrorResult)
-
         verifyZeroInteractions(resultsObserver)
 
         // act again
