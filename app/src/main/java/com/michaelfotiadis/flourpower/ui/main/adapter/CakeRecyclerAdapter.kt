@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -30,9 +31,12 @@ class CakeRecyclerAdapter(private val callback: Callback) :
 
         val item = getItem(position)
 
+        with(holder.cardRoot) {
+            this.setOnClickListener { callback.onCakeClicked(item) }
+        }
+
         with(holder.titleText) {
             this.text = item.title
-            this.setOnClickListener { callback.onCakeClicked(item) }
         }
 
         with(holder.imageView) {
@@ -49,6 +53,7 @@ class CakeRecyclerAdapter(private val callback: Callback) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        internal val cardRoot = itemView.findViewById<CardView>(R.id.card_layout)
         internal val titleText = itemView.findViewById<TextView>(R.id.title_text)
         internal val imageView = itemView.findViewById<ImageView>(R.id.image_view)
     }

@@ -56,7 +56,8 @@ class MainActivity : BaseActivity() {
 
         adapter = CakeRecyclerAdapter(object : CakeRecyclerAdapter.Callback {
             override fun onCakeClicked(uiCakeItem: UiCakeItem) {
-                Toasty.info(this@MainActivity, uiCakeItem.title).show()
+                // TODO would normally use a details screen with shared element transition
+                Toasty.info(this@MainActivity, uiCakeItem.description).show()
             }
         })
 
